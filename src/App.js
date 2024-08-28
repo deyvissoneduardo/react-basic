@@ -1,42 +1,64 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 export default class App extends Component {
-    state = {
-      name: 'Test',
-      counter: 0
+  state = {
+    counter: 0,
+    posts: [
+      {
+        id: 1,
+        title: 'Title 01',
+        body: 'Body title 01'
+      },
+        {
+          id: 2,
+          title: 'Title 02',
+          body: 'Body title 02'
+        },
+        {
+          id: 3,
+          title: 'Title 03',
+          body: 'Body title 03'
+        },
+      ]
     };
+    timeoutUpdate = null
 
-  handlePClick = () =>{
-    this.setState({
-      name: 'Deyvisson'
-    })
+  componentDidMount(){
+    this.handleTimeout()
   }
 
-  handleAClick = (event) => {
-    event.preventDefault()
-    const { counter } = this.state
-    this.setState({
-      counter: counter + 1
-    })
+  componentDidUpdate(){
+    this.handleTimeout()
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this.timeoutUpdate)
+  }
+
+  handleTimeout = () => {
+    const { posts, counter } = this.state
+    posts[0].title = 'Changed title'
+  this.timeoutUpdate = setTimeout(() => {
+      this.setState({
+        posts,
+        counter: counter +1
+      })
+    }, 5000)
   }
 
   render() {
-    const { name, counter } = this.state
+    const { posts, counter } = this.state
 
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro" onClick={this.handlePClick}>
-          Qualquer coisa {name}
-        </p>
-        <div>
-          <p onClick={this.handleAClick()}>counter {counter}</p>
-        </div>
+        <p>{counter}</p>
+        {posts.map(post => (
+          <div key={post.id}>
+            <h1>{post.title}</h1>
+            <h2>{post.body}</h2>
+          </div>
+        ))}
       </div>
     );
   }
