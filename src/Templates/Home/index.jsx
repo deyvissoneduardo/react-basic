@@ -3,6 +3,7 @@ import "./style.css";
 import { loadPosts } from "../../utils/load_posts";
 import { Post } from "../../components/Posts";
 import { Button } from "../../components/Button";
+import { TextInput } from "../../components/TextInput";
 
 export class Home extends Component {
   state = {
@@ -10,6 +11,7 @@ export class Home extends Component {
     allPosts: [],
     page: 0,
     postsPerPage: 10,
+    searchValue: "",
   };
 
   async componentDidMount() {
@@ -34,15 +36,37 @@ export class Home extends Component {
     this.setState({ posts, page: nextPage });
   };
 
-  render() {
-    const { posts, page, postsPerPage, allPosts } = this.state;
-    const noMorePosts = page + postsPerPage >= allPosts.length 
+  handleChange = (e) => {
+    const { value } = e.target;
+    this.setState({ searchValue: value });
+  };
 
+  render() {
+    const { posts, page, postsPerPage, allPosts, searchValue } = this.state;
+    const noMorePosts = page + postsPerPage >= allPosts.length;
+    const filteredPosts = !!searchValue
+      ? allPosts.filter((post) => {
+          return post.title.toLowerCase().includes(searchValue.toLowerCase());
+        })
+      : posts;
     return (
       <section className="container">
-        <Post posts={posts} />
+        <div className="search-container">
+          <TextInput
+            searchValue={searchValue}
+            handleChange={this.handleChange}
+          />
+        </div>
+        {filteredPosts.length > 0 && <Post posts={filteredPosts} />}
+        {filteredPosts.length === 0 && <h3>Não existe posts!</h3>}
         <div className="container-button">
-          <Button title="Load Posts" onClick={this.loadMorePosts} disabled={noMorePosts}/>
+          {!searchValue && (
+            <Button
+              title="Load Posts"
+              onClick={this.loadMorePosts}
+              disabled={noMorePosts}
+            />
+          )}
         </div>
       </section>
     );
