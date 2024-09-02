@@ -1,11 +1,11 @@
-import React from "react";
-import { PostCard } from "../PostCard";
+import React from 'react';
+import { PostCard } from '../PostCard';
 
-import './style.css'
+import './style.css';
 
-export const Post = ({ posts }) => (
+export const Posts = ({ posts }) => (
   <div className="posts">
-    {posts.map((post) => (
+    {posts.map(post => (
       <PostCard
         key={post.id}
         title={post.title}
@@ -15,4 +15,4 @@ export const Post = ({ posts }) => (
       />
     ))}
   </div>
-)
+);
