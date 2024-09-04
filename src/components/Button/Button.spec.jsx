@@ -1,23 +1,21 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { Button } from ".";
-import userEvent from "@testing-library/user-event";
 
 describe("<Button />", () => {
   test('should render the button with the text "Load more"', () => {
     render(<Button title="Load More" />);
 
-    const button = screen.getByRole("button", { name: /load more/i });
-
-    expect(button).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /load more/i })
+    ).toBeInTheDocument();
   });
 
   test("should call fuction on button click", () => {
     const fn = jest.fn();
     render(<Button title="Load More" onClick={fn} />);
 
-    const button = screen.getByRole("button", { name: /load more/i });
-    fireEvent.click(button);
+    fireEvent.click(screen.getByRole("button", { name: /load more/i }));
 
     expect(fn).toHaveBeenCalledTimes(1);
   });
@@ -25,16 +23,19 @@ describe("<Button />", () => {
   test("should be disabled when disabled true", () => {
     render(<Button title="Load More" disabled={true} />);
 
-    const button = screen.getByRole("button", { name: /load more/i });
-
-    expect(button).toBeDisabled()
+    expect(screen.getByRole("button", { name: /load more/i })).toBeDisabled();
   });
 
   test("should be enabled when enabled true", () => {
     render(<Button title="Load More" disabled={false} />);
 
-    const button = screen.getByRole("button", { name: /load more/i });
+    expect(screen.getByRole("button", { name: /load more/i })).toBeEnabled();
+  });
 
-    expect(button).toBeEnabled()
+  test("should match snapshot", () => {
+    const fn = jest.fn();
+    const { container } =   render(<Button title="Load More" onClick={fn} disabled={true}/>);
+ 
+    expect(container.firstChild).toMatchSnapshot()
   });
 });
