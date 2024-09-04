@@ -34,6 +34,13 @@ describe("<Posts />", () => {
     expect(screen.getAllByText(/body/i)).toHaveLength(3);
   });
 
+
+  it('should not render posts', () => {
+    render(<Posts />);
+    expect(screen.queryByRole('heading', { name: /title/i }))
+      .not.toBeInTheDocument();
+  });
+  
   test("should match snapshot", () => {
     const { container } = render(<Posts {...props} />);
     expect(container.firstChild).toMatchSnapshot();
