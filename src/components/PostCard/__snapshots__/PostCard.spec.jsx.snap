@@ -5,17 +5,17 @@ exports[`<PostCard /> should match snapshot 1`] = `
   class="post"
 >
   <img
-    alt="title 01"
+    alt="title 1"
     src="img/img.png"
   />
   <div
     class="post-content"
   >
     <h1>
-      title 01
+      title 1
     </h1>
     <p>
-      body 01
+      body 1
     </p>
   </div>
 </div>
